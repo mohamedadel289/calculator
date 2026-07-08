@@ -312,15 +312,14 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   }
 
   void ondotclicked(String dot) {
-    if(result.contains('.')) return;
+    if (result.contains('.')) return;
     result += dot;
     setState(() {});
   }
 
   void onbackspaceclicked(String backspace) {
-    if(result.isEmpty) return;
-    result=result.substring(0,result.length-1);
+    if (result.isEmpty) return;
+    result = result.substring(0, result.length - 1);
     setState(() {});
   }
-  
 }
