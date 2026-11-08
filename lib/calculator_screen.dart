@@ -267,7 +267,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   }
 
   void onoperatorclicked(String operator) {
-    if (result.isEmpty) return;
+    if (result.isEmpty || result == 'Error') return;
     if (savedNumber.isEmpty) {
       savedNumber = result;
       savedOperator = operator;
@@ -282,6 +282,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   String calculate(String lhs, String operator, String rhs) {
     double left = double.parse(lhs);
     double right = double.parse(rhs);
+    if (operator == '/' && right == 0) {
+      return 'Error';
+    }
     late double res;
     switch (operator) {
       case '+':
@@ -293,7 +296,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       case '/':
         res = left / right;
     }
-    return res.toString();
+    return res == res.truncateToDouble()
+        ? res.toInt().toString()
+        : res.toString();
   }
 
   void onclearpressed(String clear) {
@@ -304,7 +309,12 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   }
 
   void onequalsclicked(String _) {
-    if (savedNumber.isEmpty || savedOperator.isEmpty || result.isEmpty) return;
+    if (savedNumber.isEmpty ||
+        savedOperator.isEmpty ||
+        result.isEmpty ||
+        result == 'Error') {
+      return;
+    }
     result = calculate(savedNumber, savedOperator, result);
     savedNumber = '';
     savedOperator = '';
